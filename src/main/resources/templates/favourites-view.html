@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="/images/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+<!-- Preloader -->
+<div class="preloader d-flex align-items-center justify-content-center">
+    <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<!-- ##### Header Area Start ##### -->
+<header class="header-area">
+    <!-- Navbar Area -->
+    <div class="oneMusic-main-menu">
+        <div class="classy-nav-container breakpoint-off">
+            <div class="container">
+                <!-- Menu -->
+                <nav class="classy-navbar justify-content-between" id="oneMusicNav">
+
+                    <!-- Nav brand -->
+                    <a href="home.html" class="nav-brand"><img src="/images/core-img/logo.png" alt=""></a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+
+                        <!-- Close Button -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav Start -->
+                        <div class="classynav">
+                            <ul>
+
+                                <li><a th:href="@{/profile}">Profile</a></li>  <!-- ADD PROFILE OPTIONS -->
+
+
+                                <li><a href="#">Actions</a>
+
+                                    <ul class="dropdown">
+                                        <li><a th:href="@{/add-song}">Add Song</a></li>
+                                        <li><a th:href="@{/add-album}">Add Album</a></li>
+                                        <li><a th:href="@{/view-favourites}">View Favourites</a></li>
+                                    </ul> </li>
+
+                                <li><a href="#">Logout</a>
+
+                            </ul>
+
+                            <!-- Nav End -->
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ##### Header Area End ##### -->
+
+
+<!-- ***** New Hits Songs ***** -->
+<div class="col-12 col-lg-4">
+    <div class="new-hits-area mb-100">
+        <div class="section-heading text-left mb-50 wow fadeInUp" data-wow-delay="50ms">
+            <p>See what’s new</p>
+            <h2>New Hits</h2>
+        </div>
+
+        <!-- ##### View Favourites Area Start ##### -->
+        <section class="view-area section-padding-100">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-8">
+                        <div class="song-content">
+                            <!-- Songs -->
+                            <form  class="song-form"
+                                   th:action="@{/view-favourites}"
+                                   th:method="GET"
+                                   th:object="${favouritesData}"
+                            >
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div th:each="favourite : ${favouritesData}"
+             class="single-new-item d-flex align-items-center justify-content-between wow fadeInUp"
+             data-wow-delay="100ms">
+
+            <div class="first-part d-flex align-items-center">
+                <div class="content-">
+                    <h6 th:text="${favourite.title}">Song Title</h6>
+                    <p th:text="${favourite.artist.name}">Artist Name</p>
+                    <p th:text="${favourite.album.title}">Album Title</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- ##### Footer Area Start ##### -->
+<footer class="footer-area">
+    <div class="container">
+        <div class="row d-flex flex-wrap align-items-center">
+            <div class="col-12 col-md-6">
+                <a href="#"><img src="/images/core-img/logo.png" alt=""></a>
+                <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ##### All Javascript Script ##### -->
+<!-- jQuery-2.2.4 js -->
+<script src="/js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="/js/bootstrap/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="/js/bootstrap/bootstrap.min.js"></script>
+<!-- All Plugins js -->
+<script src="/js/plugins/plugins.js"></script>
+<!-- Active js -->
+<script src="/js/active.js"></script>
+</body>
+
+</html>

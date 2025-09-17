@@ -1,0 +1,60 @@
+Index: src/main/java/bg/project/muziapp2/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/bg/project/muziapp2/controller/UserController.java b/src/main/java/bg/project/muziapp2/controller/UserController.java
+--- a/src/main/java/bg/project/muziapp2/controller/UserController.java	
++++ b/src/main/java/bg/project/muziapp2/controller/UserController.java	(date 1757267589434)
+@@ -8,6 +8,7 @@
+ import jakarta.transaction.Transactional;
+ import jakarta.validation.Valid;
+ import org.springframework.stereotype.Controller;
++import org.springframework.ui.Model;
+ import org.springframework.validation.BindingResult;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.ModelAttribute;
+@@ -45,10 +46,13 @@
+ 
+ 
+     @GetMapping("/register")
+-    public String register(){
++    public String register(Model model){
+         if (userSession.isLoggedIn()) {
+             return "redirect:/home";
+         }
++        if (!model.containsAttribute("registerData")) {
++            model.addAttribute("registerData", new UserRegisterDTO());
++        }
+ 
+         return "register";
+     }
+@@ -63,14 +67,15 @@
+             return "redirect:/home";
+         }
+ 
++        boolean passwordDiff = !data.getPassword().equals(data.getConfirmPassword());
+ 
+-        if (bindingResult.hasErrors() || !(data.getPassword().equals(data.getConfirmPassword()))) {
++        if (bindingResult.hasErrors() || passwordDiff) {
+             redirectAttributes.addFlashAttribute("registerData", data);
+             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerData", bindingResult);
+ 
+-            /*          if (passwordDiff) {
+-                redirectAttributes.addFlashAttribute("passError", true);
+-            } */
++            if (passwordDiff) {
++                redirectAttributes.addFlashAttribute("passwordError", "Passwords do not match");
++            }
+ 
+             return "redirect:/register";
+         }
+@@ -78,6 +83,8 @@
+         boolean success = userService.register(data);
+ 
+         if (!success) {
++            redirectAttributes.addFlashAttribute("registerError", "Username or email already exists.");
++            redirectAttributes.addFlashAttribute("registerData", data);
+             return "redirect:/register";
+         }
+ 
