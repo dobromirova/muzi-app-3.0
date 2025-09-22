@@ -5,6 +5,8 @@ import bg.project.muziapp2.model.DTO.AddAlbumDTO;
 import bg.project.muziapp2.model.DTO.ViewAlbumDTO;
 import bg.project.muziapp2.repo.*;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AlbumService {
 
     private final SongRepository songRepository;
@@ -21,31 +24,17 @@ public class AlbumService {
     private final GenreRepository genreRepository;
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
+    private final UserHelperService userHelperService;
 
-    public AlbumService(SongRepository songRepository,
-                        UserRepository userRepository,
-                        GenreRepository genreRepository,
-                        ArtistRepository artistRepository,
-                        AlbumRepository albumRepository) {
-
-        this.songRepository = songRepository;
-        this.userRepository = userRepository;
-        this.genreRepository = genreRepository;
-        this.artistRepository = artistRepository;
-        this.albumRepository = albumRepository;
-    }
 
 
     @Transactional
     public boolean create(AddAlbumDTO data){
 
-        // TODO: Get user ID.
 
-       /* Optional<UserEntity> user = userRepository.findById(userSession.getId());
-
-        if (user.isEmpty()) {
+        if (getUser().isEmpty()) {
             return false;
-        }*/
+        }
 
         Optional<Genre> genre = genreRepository.findByName(data.getGenre());
 
@@ -79,8 +68,9 @@ public class AlbumService {
         album.setGenre(genre.get());
 
         // ADDED BY
-        /*
-        album.setAddedBy(user.get());*/
+
+
+        album.setAddedBy(getUser().get());
 
 
         albumRepository.save(album);
@@ -96,7 +86,7 @@ public class AlbumService {
                 newSong.setTitle(songTitle);
                 newSong.setArtist(artist);
                 newSong.setGenre(genre.get());
-              //  newSong.setAddedBy(user.get());
+                newSong.setAddedBy(getUser().get());
                 newSong.setAlbum(album);
 
 
@@ -131,6 +121,11 @@ public class AlbumService {
                                 .collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public Optional<UserEntity> getUser() {
+
+        return userRepository.findById(userHelperService.getUserId());
     }
 
 

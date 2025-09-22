@@ -3,8 +3,10 @@ package bg.project.muziapp2.service;
 import bg.project.muziapp2.model.*;
 import bg.project.muziapp2.model.DTO.AddSongDTO;
 import bg.project.muziapp2.model.DTO.ViewSongDTO;
+import bg.project.muziapp2.model.Enums.GenreName;
 import bg.project.muziapp2.repo.*;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class SongService {
 
     private final SongRepository songRepository;
@@ -20,29 +23,17 @@ public class SongService {
     private final GenreRepository genreRepository;
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
+    private final UserHelperService userHelperService;
 
-    public SongService(SongRepository songRepository,
-                       UserRepository userRepository,
-                       GenreRepository genreRepository, ArtistRepository artistRepository,
-                       AlbumRepository albumRepository) {
-
-        this.songRepository = songRepository;
-        this.userRepository = userRepository;
-        this.genreRepository = genreRepository;
-        this.artistRepository = artistRepository;
-        this.albumRepository = albumRepository;
-    }
 
 
     public boolean create(AddSongDTO data) {
 
 
-        //TODO: Get user ID
-        // Optional<UserEntity> byId = userRepository.findById(userSession.getId());
 
-        /* if (byId.isEmpty()) {
+        if (getUser().isEmpty()) {
             return false;
-        } */
+        }
 
 
         Optional<Genre> genre = genreRepository.findByName(data.getGenre());
@@ -82,8 +73,9 @@ public class SongService {
 
 
         // ADDED BY
-      // TODO: Get user ID  song.setAddedBy(byId.get());
 
+
+        song.setAddedBy(userHelperService.getUser());
 
         artist.addSong(song);
         album.addSong(song);
@@ -140,12 +132,38 @@ public class SongService {
             return;
         }
 
-        userOptional.get().addFavourite(songOptional.get());
+        userOptional.get().setFavouriteSongs(List.of(songOptional.get()));
 
         userRepository.save(userOptional.get());
 
 
     }
+
+    public Optional<UserEntity> getUser() {
+
+        return userRepository.findById(userHelperService.getUserId());
+    }
+
+
+    public ViewSongDTO getSongById(long id) {
+        Song song = songRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Song with ID " + id + " not found"));
+
+        return mapToDTO(song);
+    }
+
+    private ViewSongDTO mapToDTO(Song song) {
+        Long id = song.getId();
+        String title = song.getTitle();
+        String artistName = song.getArtist() != null ? song.getArtist().getName() : null;
+        String albumTitle = song.getAlbum() != null ? song.getAlbum().getTitle() : null;
+        GenreName genre = song.getGenre() != null ? song.getGenre().getName() : null;
+
+        return new ViewSongDTO(id, title, artistName, albumTitle, genre);
+
+    }
+
+
 
 
 

@@ -4,9 +4,12 @@ import bg.project.muziapp2.model.DTO.AddSongDTO;
 import bg.project.muziapp2.model.DTO.ViewSongDTO;
 import bg.project.muziapp2.model.Song;
 import bg.project.muziapp2.service.SongService;
+import bg.project.muziapp2.service.UserHelperService;
 import bg.project.muziapp2.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,15 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class SongController {
 
     private final SongService songService;
     private final UserService userService;
-
-    public SongController(SongService songService, UserService userService) {
-        this.songService = songService;
-        this.userService = userService;
-    }
+    private final UserHelperService userHelperService;
 
     @ModelAttribute("songData")
     public AddSongDTO songData(){
@@ -35,18 +35,13 @@ public class SongController {
     }
 
 
-
-
     @GetMapping("/add-song")
+   // @PreAuthorize("hasRole('ADMIN')") // THIS IS OPTIONAL FOR THE SAKE OF TESTING ROLES IN SPRING SECURITY. REMOVE IN CASE IT BREAKS
     public String addSong(){
 
 
         return "song-add";
     }
-
-
-
-
 
 
 
@@ -78,37 +73,7 @@ public class SongController {
     }
 
 
-/*
-    @GetMapping("/view-songs")
-    public String songView(Model model) {
-        if (!userSession.isLoggedIn()) {
-            return "redirect:/";
-        }
-
-    //    Map<GenreName, List<Song>> allSongs = songService.findAllByGenre();
-
-
-    //    model.addAttribute("POP",allSongs.get(GenreName.POP));
-
-
-
-
-                              <option value="POP">Pop</option>
-                                <option value="ROCK">Rock</option>
-                                <option value="RNB">R&B</option>
-                                <option value="JAZZ">Jazz</option>
-                                <option value="KPOP">K-pop</option>
-                                <option value="LATIN">Latin</option>
-
-        //    songService.findFavourites(userSession.getId());
-
-        List<Song> songs = songService.getAllSongs();
-        model.addAttribute("songs", songs);
-
-
-        return "/songs-view";
-    }   */
-
+    // View ALL songs
     @GetMapping("/view-songs")
     public String songView(Model model) {
 
@@ -123,10 +88,7 @@ public class SongController {
     public String addToFavourites(@PathVariable long songId) {
 
 
-        //TODO: Get user ID and add song to user favourites.
-
-
-      //  songService.addToFavourites(, songId);
+        songService.addToFavourites(userHelperService.getUserId(), songId);
 
 
 
@@ -138,11 +100,9 @@ public class SongController {
     @Transactional
     public String viewFavourites(Model model) {
 
-       //TODO: Get user favourites
 
-
-      //  List<Song> favourites = userService.findFavourites(userSession.getId());
-      //  model.addAttribute("favouritesData", favourites);
+        List<Song> favourites = userService.findFavourites(userHelperService.getUserId());
+        model.addAttribute("favouritesData", favourites);
 
 
         return "favourites-view";

@@ -6,6 +6,7 @@ import bg.project.muziapp2.model.DTO.ViewProfileDTO;
 import bg.project.muziapp2.model.Song;
 import bg.project.muziapp2.model.UserEntity;
 import bg.project.muziapp2.repo.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +16,15 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final UserHelperService userHelperService;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public boolean register(UserRegisterDTO data){
 
@@ -59,12 +57,11 @@ public class UserService {
     }
 
 
-    /*
+
     public ViewProfileDTO getProfileData() {
 
-        //TODO: Get user ID
 
-        Long userId = userSession.getId();
+        Long userId = userHelperService.getUserId();
         Optional<UserEntity> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
@@ -78,7 +75,7 @@ public class UserService {
 
         return new ViewProfileDTO(userEntity.getUsername(), addedSongsCount, favouriteSongsCount);
 
-    }*/
+    }
 
 
 

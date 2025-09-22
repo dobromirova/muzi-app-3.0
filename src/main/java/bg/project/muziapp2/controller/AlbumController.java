@@ -4,6 +4,7 @@ import bg.project.muziapp2.model.DTO.AddAlbumDTO;
 import bg.project.muziapp2.model.DTO.ViewAlbumDTO;
 import bg.project.muziapp2.service.AlbumService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,15 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class AlbumController {
 
     private final AlbumService albumService;
 
-
-    public AlbumController(AlbumService albumService) {
-
-        this.albumService = albumService;
-    }
 
     @ModelAttribute("albumData")
     public AddAlbumDTO albumData(){

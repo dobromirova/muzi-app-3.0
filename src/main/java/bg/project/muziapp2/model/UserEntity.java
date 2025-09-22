@@ -1,12 +1,18 @@
 package bg.project.muziapp2.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class UserEntity {
 
     @Id
@@ -31,69 +37,18 @@ public class UserEntity {
     @ManyToMany
     private List<Song> favouriteSongs;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+    )
+    private Set<Role> roles;
+
     public UserEntity() {
         this.songsAdded = new ArrayList<>();
         this.favouriteSongs = new ArrayList<>();
+        this.roles = new HashSet<>();
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Song> getSongsAdded() {
-        return songsAdded;
-    }
-
-    public void setSongsAdded(List<Song> songsAdded) {
-        this.songsAdded = songsAdded;
-    }
-
-
-    public List<Song> getFavouriteSongs() {
-        return favouriteSongs;
-    }
-
-    public void setFavouriteSongs(List<Song> favouriteSongs) {
-        this.favouriteSongs = favouriteSongs;
-    }
-
-    public List<Album> getAlbumsAdded() {
-        return albumsAdded;
-    }
-
-    public void setAlbumsAdded(List<Album> albumsAdded) {
-        this.albumsAdded = albumsAdded;
-    }
-
-    public void addFavourite(Song song) {
-        this.favouriteSongs.add(song);
-    }
 }

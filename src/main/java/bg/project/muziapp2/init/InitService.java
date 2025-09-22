@@ -3,6 +3,7 @@ package bg.project.muziapp2.init;
 import bg.project.muziapp2.model.Enums.GenreName;
 import bg.project.muziapp2.model.Genre;
 import bg.project.muziapp2.repo.GenreRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class InitService implements CommandLineRunner {
 
     private final Map<GenreName, String> descriptions = Map.of(
@@ -24,10 +26,6 @@ public class InitService implements CommandLineRunner {
 
 
     private final GenreRepository genreRepository;
-
-    public InitService(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
-    }
 
     @Override
     public void run(String... args) throws Exception {
