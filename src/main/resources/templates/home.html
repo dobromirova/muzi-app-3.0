@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
+    <!-- Title -->
+    <title>One Music - Modern Music HTML5 Template</title>
+
     <!-- Favicon -->
     <link rel="icon" href="/images/core-img/favicon.ico">
 
@@ -74,8 +77,11 @@
                                             <li><a th:href="@{/view-favourites}">View Favourites</a></li>
                                         </ul> </li>
 
-                                    <li><a
-                                            th:href="@{/logout}">Logout</a>
+                                    <li>
+                                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                                            <button type="submit" class="logout-button">Logout</button>
+                                        </form>
+                                    </li>
 
                                 </ul>
 

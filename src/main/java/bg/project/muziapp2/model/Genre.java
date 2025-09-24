@@ -22,7 +22,7 @@ public class Genre {
     @Enumerated(EnumType.STRING)
     private GenreName name;
 
-
+    @Lob
     private String description;
 
 

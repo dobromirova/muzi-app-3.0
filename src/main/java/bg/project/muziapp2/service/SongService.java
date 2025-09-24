@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -121,21 +122,29 @@ public class SongService {
     public void addToFavourites(Long id, long songId){
 
         Optional<UserEntity> userOptional = userRepository.findById(id);
-
         if (userOptional.isEmpty()) {
             return;
         }
 
         Optional<Song> songOptional = songRepository.findById(songId);
-
         if (songOptional.isEmpty()) {
             return;
         }
 
-        userOptional.get().setFavouriteSongs(List.of(songOptional.get()));
+        UserEntity user = userOptional.get();
+        Song song = songOptional.get();
 
-        userRepository.save(userOptional.get());
 
+        if (user.getFavouriteSongs() == null) {
+            user.setFavouriteSongs(new ArrayList<>());
+        }
+
+
+        if (!user.getFavouriteSongs().contains(song)) {
+            user.getFavouriteSongs().add(song);
+        }
+
+        userRepository.save(user);
 
     }
 

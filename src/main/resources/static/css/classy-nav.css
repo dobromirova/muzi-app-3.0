@@ -258,6 +258,7 @@ img {
       transform: rotate3d(0, 0, 1, -45deg);
       top: -8px; }
 
+
 .classynav ul li .megamenu {
   position: absolute;
   width: 100%;
@@ -333,6 +334,35 @@ img {
   -ms-flex-align: center;
   -ms-grid-row-align: center;
   align-items: center; }
+
+/* Custom Logout Btn */
+.logout-button {
+  width: 64.84px;
+  height: 35px;
+  background: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  box-shadow: none;
+  transition: color 500ms ease;
+}
+
+.logout-button:hover {
+  color: #bbb;
+  background: none;
+  box-shadow: none;
+}
+
+.logout-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .breakpoint-off .classynav ul li .dropdown {
   width: 180px;
   position: absolute;

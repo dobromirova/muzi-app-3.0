@@ -87,12 +87,11 @@ public class SongController {
     @PostMapping("/add-to-favourites/{songId}")
     public String addToFavourites(@PathVariable long songId) {
 
-
         songService.addToFavourites(userHelperService.getUserId(), songId);
 
 
 
-        return "redirect:/home";
+        return "songs-view";
     }
 
 
@@ -102,6 +101,7 @@ public class SongController {
 
 
         List<Song> favourites = userService.findFavourites(userHelperService.getUserId());
+
         model.addAttribute("favouritesData", favourites);
 
 
