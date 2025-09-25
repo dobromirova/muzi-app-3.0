@@ -3,7 +3,7 @@ CODE FUNCTIONALITY:
 This is my first website coded with Java on IntelliJ. 
 It implements Spring, a MySQL database accessed through Spring Data, as well as a Thymeleaf template engine. 
 It contains 11 web pages, 5 independent entity models, controllers, services and repositories, and 1 REST controller. 
-It is equipped with Spring Security, Internalization (i18n), Mapping, Scheduling and Testing.
+It is equipped with Spring Security, Internalization (i18n), Scheduling and Testing.
 
 For the Front-End I used a bootstrap off of https://colorlib.com
 
